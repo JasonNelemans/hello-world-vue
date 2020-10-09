@@ -21,7 +21,7 @@ export default {
       method: 'get',
     })
       .then((response) => {
-        return console.log(response.json());
+        return response.json();
       })
       .then((jsonData) => {
         this.questions = jsonData.results;
