@@ -8,28 +8,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'app',
-  data() {
-    return {
-      questions: [],
-    };
-  },
-  mounted: function() {
-    fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple', {
-      method: 'get',
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonData) => {
-        this.questions = jsonData.results;
-      });
-  },
-};
-</script>
-
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

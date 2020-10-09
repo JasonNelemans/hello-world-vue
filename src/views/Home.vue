@@ -16,11 +16,27 @@ import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/Header.vue';
 import QuestionBox from '@/components/QuestionBox.vue';
 
-@Component({
+export default {
+  name: 'home',
   components: {
     Header,
     QuestionBox,
   },
-})
-export default class Home extends Vue {}
+  data() {
+    return {
+      questions: [],
+    };
+  },
+  mounted: function() {
+    fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple', {
+      method: 'get',
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonData) => {
+        this.questions = jsonData.results;
+      });
+  },
+};
 </script>
