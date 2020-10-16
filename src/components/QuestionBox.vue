@@ -7,8 +7,8 @@
 
       <hr class="my-4" />
 
-      <p>
-        List of answers
+      <p v-for="(answer, index) in answers" :key="index">
+        {{ answer }}
       </p>
 
       <b-button variant="primary" href="#">Submit</b-button>
@@ -17,14 +17,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: {
     currentQuestion: Object,
     next: Function,
   },
+  computed: {
+    answers(): string[] {
+      const answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer];
+      return answers;
+    }
+  },
   mounted() {
     console.log(this.currentQuestion);
+    console.log(this.answers);
   },
 };
 </script>
