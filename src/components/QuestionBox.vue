@@ -11,7 +11,7 @@
         <b-list-group-item
           v-for="(answer, index) in answers"
           :key="index"
-          @click="selectAnswer(index, answer.correct_answer)"
+          @click="selectAnswer(index, answer)"
           :class="[selectedIndex === index ? 'selected' : '']"
         >
           {{ answer }}
@@ -21,7 +21,7 @@
       <b-button
         variant="primary"
         @click="submitAnswer"
-        :disabled="selectedIndex === null"
+        :disabled="selectedIndex === null || answered"
       >
         Submit
       </b-button>
@@ -42,7 +42,8 @@ export default {
   data() {
     return {
       selectedIndex: null,
-      selectedAnswer: ''
+      selectedAnswer: '',
+      answered: false
     };
   },
   computed: {
@@ -59,7 +60,6 @@ export default {
     selectAnswer(index: null & number, answer: string) {
       this.selectedIndex = index;
       this.selectedAnswer = answer;
-      console.log("Selected answer: ", this.selectedAnswer);
     },
     shuffleAnswers(array: string[]) {
       for (let i = array.length - 1; i >= 0; i--) {
@@ -71,12 +71,13 @@ export default {
       }
     },
     submitAnswer() {
-      const isCorrect = false;
+      let isCorrect = false;
 
-      // if (this.selectedIndex === this.correctIndex) {
-      //   isCorrect = true;
-      // }
+      if (this.selectedAnswer === this.currentQuestion.correct_answer) {
+        isCorrect = true;
+      }
 
+      this.answered = true;
       this.increment(isCorrect);
     }
   },
@@ -90,6 +91,7 @@ export default {
     // }
     currentQuestion() {
       this.selectedIndex = null;
+      this.answered = false;
     }
   }
 };
