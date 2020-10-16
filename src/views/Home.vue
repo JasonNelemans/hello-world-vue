@@ -18,19 +18,21 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import { QuizQuestionsArray } from '@/types';
+
 import Header from '@/components/Header.vue';
 import QuestionBox from '@/components/QuestionBox.vue';
 
 export default {
-  name: 'home',
+  name: 'home' as string,
   components: {
     Header,
     QuestionBox,
   },
   data() {
     return {
-      questions: [],
-      index: 0,
+      questions: [] as QuizQuestionsArray,
+      index: 0 as number,
     };
   },
   methods: {
