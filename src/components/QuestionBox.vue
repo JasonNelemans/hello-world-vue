@@ -12,7 +12,7 @@
           v-for="(answer, index) in answers"
           :key="index"
           @click="selectAnswer(index, answer)"
-          :class="[selectedIndex === index ? 'selected' : '']"
+          :class="answerClass(index)"
         >
           {{ answer }}
         </b-list-group-item>
@@ -43,7 +43,8 @@ export default {
     return {
       selectedIndex: null,
       selectedAnswer: '',
-      answered: false
+      answered: false,
+      correctIndex: null as null | number,
     };
   },
   computed: {
@@ -52,11 +53,24 @@ export default {
         ...this.currentQuestion.incorrect_answers,
         this.currentQuestion.correct_answer
       ];
-      this.shuffleAnswers(answers);
+      // this.shuffleAnswers(answers);
       return answers;
     }
   },
   methods: {
+    answerClass(index: number) {
+      let answerClass = ''
+
+      if (!this.answered && this.selectedIndex === index) {
+        answerClass = 'selected'
+      } else if (this.answered && this.correctIndex === index) {
+        answerClass = 'correct'
+      } else if (this.answered && this.selectedIndex === index && this.correctIndex !== index) {
+        answerClass = 'incorrect'
+      }
+
+      return answerClass;
+    },
     selectAnswer(index: null & number, answer: string) {
       this.selectedIndex = index;
       this.selectedAnswer = answer;
@@ -72,8 +86,9 @@ export default {
     },
     submitAnswer() {
       let isCorrect = false;
+      this.correctIndex = this.answers.indexOf(this.currentQuestion.correct_answer);
 
-      if (this.selectedAnswer === this.currentQuestion.correct_answer) {
+      if (this.selectedIndex === this.correctIndex) {
         isCorrect = true;
       }
 
@@ -82,16 +97,13 @@ export default {
     }
   },
   watch: {
-    // currentQuestion: {
-    //   immediate: true,  <-- makes the handler method run on the first time.
-    //   handler() {
-    //     this.selectedIndex = null;
-    //     this.shuffleAnswers(this.answers);
-    //   }
-    // }
-    currentQuestion() {
-      this.selectedIndex = null;
-      this.answered = false;
+    currentQuestion: {
+      immediate: true,  // <-- makes the handler method run on the first time.
+      handler() {
+        this.selectedIndex = null;
+        this.answered = false;
+        this.shuffleAnswers(this.answers);
+      }
     }
   }
 };
