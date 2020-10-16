@@ -6,30 +6,26 @@
       </template>
 
       <hr class="my-4" />
-      
+
       <b-list-group>
-        <b-list-group-item 
-          v-for="(answer, index) in answers" 
+        <b-list-group-item
+          v-for="(answer, index) in answers"
           :key="index"
-          @click="selectAnswer(index)"
+          @click="selectAnswer(index, answer.correct_answer)"
           :class="[selectedIndex === index ? 'selected' : '']"
         >
           {{ answer }}
         </b-list-group-item>
       </b-list-group>
-      
 
-      <b-button 
+      <b-button
         variant="primary"
         @click="submitAnswer"
         :disabled="selectedIndex === null"
       >
         Submit
       </b-button>
-      <b-button 
-        @click="next" 
-        variant="success" 
-      >
+      <b-button @click="next" variant="success">
         Next
       </b-button>
     </b-jumbotron>
@@ -46,30 +42,36 @@ export default {
   data() {
     return {
       selectedIndex: null,
-    }
+      selectedAnswer: ''
+    };
   },
   computed: {
     answers(): string[] {
-      const answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer];
+      const answers = [
+        ...this.currentQuestion.incorrect_answers,
+        this.currentQuestion.correct_answer
+      ];
       this.shuffleAnswers(answers);
       return answers;
     }
   },
   methods: {
-    selectAnswer(index: null & number ) {
+    selectAnswer(index: null & number, answer: string) {
       this.selectedIndex = index;
+      this.selectedAnswer = answer;
+      console.log("Selected answer: ", this.selectedAnswer);
     },
     shuffleAnswers(array: string[]) {
-      for(let i = array.length - 1; i >= 0; i--) {
-        const j = Math.round(Math.random() * i)
-        const temp = array[i]
-        array[i] = array[j]
-        array[j]= temp
-        return temp; 
+      for (let i = array.length - 1; i >= 0; i--) {
+        const j = Math.round(Math.random() * i);
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        return temp;
       }
     },
     submitAnswer() {
-      let isCorrect = false;
+      const isCorrect = false;
 
       // if (this.selectedIndex === this.correctIndex) {
       //   isCorrect = true;
@@ -80,7 +82,7 @@ export default {
   },
   watch: {
     // currentQuestion: {
-    //   immediate: true,  <-- makes the handler method run on the first time. 
+    //   immediate: true,  <-- makes the handler method run on the first time.
     //   handler() {
     //     this.selectedIndex = null;
     //     this.shuffleAnswers(this.answers);
@@ -93,30 +95,29 @@ export default {
 };
 </script>
 
-
 <style scoped>
-  .list-group {
-    margin-bottom: 15px;
-  }
+.list-group {
+  margin-bottom: 15px;
+}
 
-  .list-group-item:hover{
-    background: #EEE;
-    cursor: pointer;
-  }  
-  
-  .btn {
-    margin: 0 5px;
-  }
+.list-group-item:hover {
+  background: #eee;
+  cursor: pointer;
+}
 
-  .selected {
-    background-color: lightblue;
-  }
+.btn {
+  margin: 0 5px;
+}
 
-  .correct {
-    background-color: lightgreen;
-  }
+.selected {
+  background-color: lightblue;
+}
 
-  .incorrect {
-    background-color: red;
-  }
+.correct {
+  background-color: lightgreen;
+}
+
+.incorrect {
+  background-color: red;
+}
 </style>

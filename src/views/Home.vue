@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <Header 
-      :numCorrect="numCorrect"
-      :numTotal="numTotal"
-    />
+    <Header :numCorrect="numCorrect" :numTotal="numTotal" />
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="6" offset="3">
@@ -20,18 +17,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
-import { QuizQuestionsArray } from '@/types';
+import { QuizQuestionsArray } from "@/types";
 
-import Header from '@/components/Header.vue';
-import QuestionBox from '@/components/QuestionBox.vue';
+import Header from "@/components/Header.vue";
+import QuestionBox from "@/components/QuestionBox.vue";
 
 export default {
-  name: 'home' as string,
+  name: "home" as string,
   components: {
     Header,
-    QuestionBox,
+    QuestionBox
   },
   data() {
     return {
@@ -47,20 +44,20 @@ export default {
       this.index++;
     },
     increment(isCorrect: boolean) {
-      if (isCorrect) this.numCorrect++
-      this.numTotal++
+      if (isCorrect) this.numCorrect++;
+      this.numTotal++;
     }
   },
   mounted: function() {
-    fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple', {
-      method: 'get',
+    fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple", {
+      method: "get"
     })
-      .then((response) => {
+      .then(response => {
         return response.json();
       })
-      .then((jsonData) => {
+      .then(jsonData => {
         this.questions = jsonData.results;
       });
-  },
+  }
 };
 </script>
