@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <Header />
+    <Header 
+      :numCorrect="numCorrect"
+      :numTotal="numTotal"
+    />
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="6" offset="3">
@@ -8,6 +11,7 @@
             v-if="questions.length"
             :currentQuestion="questions[index]"
             :next="next"
+            :increment="increment"
           />
         </b-col>
       </b-row>
@@ -33,6 +37,8 @@ export default {
     return {
       questions: [] as QuizQuestionsArray,
       index: 0 as number,
+      numCorrect: 0 as number,
+      numTotal: 0 as number
     };
   },
   methods: {
@@ -40,6 +46,10 @@ export default {
       // next: function() {}
       this.index++;
     },
+    increment(isCorrect: boolean) {
+      if (isCorrect) this.numCorrect++
+      this.numTotal++
+    }
   },
   mounted: function() {
     fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple', {
