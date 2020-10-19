@@ -6,13 +6,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import Header from "@/components/Header.vue";
 
-@Component({
+export default {
+  name: 'about',
   components: {
     Header
+  },
+  mounted: function() {
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=151'", {
+      method: "get"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonData => {
+        console.log('poke data: ', jsonData)
+      });
   }
-})
-export default class About extends Vue {}
+}
 </script>
