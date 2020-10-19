@@ -41,9 +41,9 @@ export default {
   },
   data() {
     return {
-      selectedIndex: null,
-      selectedAnswer: '',
-      answered: false,
+      selectedIndex: null as null | number,
+      selectedAnswer: '' as string,
+      answered: false as boolean,
       correctIndex: null as null | number,
     };
   },
